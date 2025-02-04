@@ -1,42 +1,43 @@
 <script setup>
-import { ref, onMounted, watch} from 'vue'
+  import { ref, onMounted, watch} from 'vue'
 
-const myArray = ref([])
-const name = ref('')
-const input_content = ref('')
-const input_category = ref(null)
+  const myArray = ref([])
+  const name = ref('')
+  const input_content = ref('')
+  const input_category = ref(null)
 
-const addTodo = () => {
+  const addTodo = () => {
     if (input_content.value.trim() === '' || input_category.value === null) {
         return
-    }
+      }
 
-    myArray.value.push({
+      myArray.value.push({
         content: input_content.value,
         category: input_category.value,
         done:false,
-    })
+      })
 
-    input_content.value = ''
-    input_category.value = null
-}
+      input_content.value = ''
+      input_category.value = null
+  }
 
-const removeTodo = (x) => {
-  myArray.value = myArray.value.filter(Element => Element !==x)
-}
+  const removeTodo = (x) => {
+    myArray.value = myArray.value.filter(Element => Element !== x)
+  }
 
-onMounted( () =>{
-  name.value = localStorage.getItem('name')  || ''
-  myArray.value = JSON.parse(localStorage.getItem('myArray')) || []
-})
+  onMounted(() => {
+    name.value = localStorage.getItem('name') || '';
+    myArray.value = JSON.parse(localStorage.getItem('myArray')) || []
+  })
+  
+  watch(name, (newVal) => {
+    localStorage.setItem('name', newVal)
+  })
 
-watch(name, (newVal) => {
-  localStorage.setItem('name', newVal)
-})
+  watch(myArray, (newVal) => {
+    localStorage.setItem('myArray', JSON.stringify(newVal))
+  }, {deep: true})
 
-watch(myArray, (newVal) => {
-  localStorage.setItem('myArray', JSON.stringify(newVal))
-}, {deep: true})
 
 </script>
 
